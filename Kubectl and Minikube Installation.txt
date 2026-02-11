@@ -1,0 +1,50 @@
+################Kubectl Installation on Ubuntu##############
+
+sudo apt-get update
+
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list 
+
+sudo apt-get update
+
+sudo apt-get install -y kubectl
+
+
+kubectl version --client
+
+
+############Minikube Installation ########
+
+curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+
+
+minikube start --nodes 2 -p local-cluster --driver=docker // creates a cluster with 2 nodes.
+
+minikube status -p local-cluster // to see cluster info
+
+kubectl config get-contexts // to see the how many cluster are there.
+
+kubectl config set-context name of the cluster to which we want to switch
+
+example: kubectl config set-context local-cluster  // to switch between different cluster.
+
+minikube node add --worker(type: is it worker or master) -p local-cluster(name of cluster)  // to add a node to the cluster.
+
+example: minikube node add --worker -p local-cluster
+
+minikube node delete #name of node -p local-cluster ( name of the cluster)  // To delete the node from a cluster
+
+example: minikube node delete minikube-node1 -p local-cluster 
+
+minikube dashboard --url -p #name of cluster
+
+exapmle: minukube dashboard --url -p local-cluster   // to access minikube cluster through web
